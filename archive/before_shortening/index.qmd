@@ -1,0 +1,299 @@
+---
+title: "Matching Fathers and Children: A SQL Tutorial in Python"
+date: 2026-10-21
+categories:
+  - SQL
+  - Python
+  - intergenerational mobility
+draft: true
+---
+
+## Why I Wanted to Learn SQL
+
+I have recently been learning SQL. One thing I find useful is how it organizes data around a question. Instead of manually searching across files, I can select the columns I need, connect tables through identifiers, and summarize repeated observations. I wanted to share these basic operations through a practical tutorial for readers who know some Python and SQL.
+
+The example is intergenerational income persistence: **how is a father's income associated with his adult child's income?** A second question follows naturally: does that association look different when we use several years of income instead of just one?
+
+These questions require more than a regression command. We first need to identify the correct father and child, locate each person's own income, and turn repeated annual records into one row per pair. That is where SQL helps. Python then estimates the regressions and creates the figures.
+
+By the end, we will have used `SELECT`, `WHERE`, `JOIN`, `CASE`, and `GROUP BY` with `AVG()` and `COUNT()` to build a matched dataset. Our two regressions use the same **143 father-child pairs**. They describe an association, not the causal effect of a father's income on a child's income.
+
+## Methodology: Decide What to Compare First
+
+The data source is the [Panel Study of Income Dynamics](https://psidonline.isr.umich.edu/), which follows families and their descendants over time. The Family Identification Mapping System (FIMS) provides the biological father-child links. A separate extract contains permanent person identifiers, annual family identifiers, age, family-member status, and individual labor income. Here, a "child" means a person's position in the family relationship, not that the person is still a minor. Both sons and daughters can enter the analysis.
+
+I use the available **1994–2023 survey waves**, corresponding to income years 1993–2022. These are not just two endpoint years. The selected income variables in this period exclude farm and unincorporated business income. Earlier Head totals include these components, so combining the entire history without adjustment would mix definitions. This restriction improves consistency, but it also limits which generations can be observed at the required ages.
+
+The outcome is **personal labor income, not total family income**. A person's income can be stored in either the Reference Person or Spouse field, depending on that person's role in the family that year. I use the relationship and sequence variables to choose the appropriate field. This design covers current reference persons and spouses/partners; it does not recover earnings for every other adult living in the household.
+
+Income refers to the year before the survey. I approximate age in the income year as survey age minus one. Without exact birth and interview dates, this is an approximation rather than an exact age measure. I convert each annual amount into 2022 dollars using the BLS CPI-U, U.S. city average, all items, not seasonally adjusted. Annual CPI is the mean of the twelve monthly observations:
+
+$$
+Y^{real}_{it}=Y^{nominal}_{it}\times\frac{CPI_{2022}}{CPI_t}.
+$$
+
+| Measure | Selection rule |
+|---|---|
+| Mature single-year income | Observation at the selected age A, identical for both generations |
+| Multi-year income | Mean of available real incomes at ages A−7 through A+7, with at least three valid observations |
+
+If a person has more than one observation at the selected approximate age, I choose the earlier income year. The choice is made before checking whether that income is positive. Recorded zero incomes remain in multi-year averages. These codes can include inapplicable cases, so role checks are essential and remaining ambiguity is a limitation. Because a logarithm of zero is undefined, a pair is excluded from the common regression sample if either selected single-year income or either average is nonpositive. I do not replace zero with one or search for another positive year. Very high codes at or above 9,999,997 are conservatively excluded rather than treated as ordinary income. Some PSID income values are imputed; this extract does not identify every imputed component.
+
+Each child contributes one row. Both father and child must have an eligible single-year income and a multi-year average. Siblings can share a father, so the 143 pairs contain 123 distinct fathers. The sample size and the actual number of years contributing to the averages are reported with the results below.
+
+For the first regression, the code compares candidate ages **30–45**. For each age it counts pairs with positive single-year income at that exact approximate age and valid positive averages for both generations. It selects the age with the largest **common sample**, not the largest regression coefficient. Ties go to the age closest to 40, then the younger age. The full counts are saved in `results/tables/age_coverage.csv`, including counts eligible for the single-year model alone. This rule selected **age 36**. It favors coverage, not necessarily the best age for measuring lifetime income. Both people are observed at the same approximate age, usually in different calendar years. This is a sample restriction, not an age variable added to the regression. We do not add education, occupation, or other controls.
+
+For the second regression, we average each person's real income within seven years of the selected age. With A = 36, the window is **ages 29–43**, covering fifteen possible ages. This does **not** mean fifteen annual observations or full coverage of the window. Each person needs at least three observations. We report observation counts and first-to-last spans; missing years are not filled in. The two generations can have different observed ages within the same permitted window. These averages remain limited proxies for lifetime income.
+
+### Why Average Income?
+
+Income changes over a working life. A person may be studying, starting a career, or approaching retirement. If income at a particular age poorly represents lifetime income, the estimated IGE can suffer from **life-cycle bias**. Measuring both generations at age 36 avoids comparing a young child with a much older father, but it cannot guarantee that both incomes represent long-run economic status equally well.
+
+There are also **temporary income fluctuations**. An internship, a period without work, or an unusually large bonus can make one year's earnings unrepresentative. Averaging several observations gives any one year less weight. It can reduce this source of noise, although it cannot remove every life-cycle problem. Persistent low earnings and incomplete age coverage can remain in an average.
+
+[Mazumder's review](https://pmc.ncbi.nlm.nih.gov/articles/PMC6820674/) discusses why longer income histories matter for estimates of intergenerational persistence. Here, we use available observations as a limited long-run income proxy. We do not attempt to reproduce the paper's sample or target its coefficient.
+
+### How We Estimate IGE
+
+We estimate an ordinary least squares regression with an intercept:
+
+$$
+\log(Y_{child,i}) = \alpha + \beta\log(Y_{father,i}) + \varepsilon_i.
+$$
+
+The slope $\beta$ is the **intergenerational income elasticity (IGE)**. A 1% difference in fathers' income is associated with approximately a $\beta$% difference in children's income in this sample. A larger positive IGE means stronger income persistence across generations under the chosen measure.
+
+The two models change the income measure, while keeping the pairs fixed:
+
+| Model | Father's income | Child's income |
+|---|---|---|
+| Single year | Real income at approximate age 36 | Real income at approximate age 36 |
+| Multi-year | Mean real income at ages 29–43 | Mean real income at ages 29–43 |
+
+For the second model, we calculate the arithmetic mean of each person's available real incomes **first**, then take its natural logarithm. The log of average income is not the same as the average of log income. We report descriptive point estimates without formal significance tests.
+
+## What SQL Needs to Build
+
+Our goal is a table with one row per father-child pair and four income columns: the father's and child's single-year incomes, and their two average incomes. The input tables serve different purposes:
+
+| Table | One row represents | Purpose |
+|---|---|---|
+| `people` | One person | Check permanent identifiers |
+| `relationships` | One biological father-child link | Identify who should be matched |
+| `person_year` | One person in one survey wave | Supply age, family ID, role, and income fields |
+| `cpi` | One income year | Convert nominal income to constant dollars |
+
+We will connect people, select their income records, aggregate across years, and attach the resulting measures to each pair. SQL builds the analysis table; Python fits the regressions after that table is ready.
+
+## Step 1: Put the Tables into SQLite
+
+Python prepares the files and estimates the regressions. SQL handles the matching, filtering, and aggregation. SQLite is included with Python, so a separate database server is not needed.
+
+The repository script first reshapes the wide extract into a `person_year` table, with one row per person and survey wave. It also creates `people`, `relationships`, and `cpi` tables. The variable mapping is saved in `code/variables.csv`; all preparation, SQL queries, regressions, and plotting are included in `code/analysis.py`. The separate CPI download script supplies the inflation series.
+
+The following snippets assume that Python is running from the BLOG6 repository root. They show the steps used by `code/analysis.py` and are displayed as code rather than executed when this article renders.
+
+```python
+from pathlib import Path
+import sqlite3
+import sys
+import numpy as np
+import pandas as pd
+
+ROOT = Path.cwd()
+sys.path.insert(0, str(ROOT / "code"))
+from analysis import (prepare_inputs, run_sql, regressions, make_figures,
+                      INCOME_SQL, MEASURES_SQL, PAIRS_SQL)
+from download_cpi import main as prepare_cpi
+
+for folder in [ROOT / "data/processed", ROOT / "results/tables", ROOT / "results/figures"]:
+    folder.mkdir(parents=True, exist_ok=True)
+prepare_cpi()
+connection = sqlite3.connect("")
+prepare_inputs(connection)
+```
+
+Inside `prepare_inputs()`, Python reads the files, reshapes the annual columns, and loads the tables into SQLite with pandas. For example:
+
+```python
+# data has already been prepared with one permanent ID per person.
+data[["person_id"]].to_sql(
+    "people", connection, index=False, if_exists="replace"
+)
+```
+
+This illustrates the loading step inside the helper function, rather than an additional command to run after it. `to_sql()` creates the database table that subsequent SQL queries can use.
+
+The permanent person identifier combines the 1968 family identifier and person number. The annual family interview number changes over time, so it cannot identify the same individual across years. The FIMS links use the permanent identifiers. The downloaded extract already attaches annual family variables to individuals; our SQL still needs to link the two generations and select the right person's income.
+
+## Step 2: Match Fathers and Children with JOIN
+
+```sql
+SELECT DISTINCT r.child_id, r.father_id
+FROM relationships AS r
+JOIN people AS c ON r.child_id = c.person_id
+JOIN people AS p ON r.father_id = p.person_id;
+```
+
+`SELECT` chooses the columns to keep. `JOIN` connects tables using matching identifiers. Here, `people` appears twice: `c` checks that the child is present, while `p` checks that the father is present. An inner join keeps only links for which both people are found. `DISTINCT` removes repeated copies of the same pair, but it would not fix a genuinely incorrect parent identifier. The Python preparation therefore also checks that a child is not linked to multiple different fathers.
+
+The father is identified by FIMS, not by assuming that the family reference person is always the father. Once the links are established, each generation's income can be attached separately.
+
+## Step 3: Select Each Person's Income
+
+This is the core of the income-selection query:
+
+```sql
+SELECT person_id, survey_year,
+       survey_year - 1 AS income_year,
+       survey_age - 1 AS age,
+       CASE
+           WHEN sequence_number = 1 AND relationship = 10
+               THEN head_income
+           WHEN sequence_number = 2 AND relationship IN (20, 22)
+               THEN spouse_income
+       END AS nominal_income
+FROM person_year
+WHERE family_id > 0;
+```
+
+`CASE` chooses the income field according to the person's current family role. `WHERE` filters records. The sequence number matters because someone who moved out can still carry a relationship code referring to a previous family. The full query also joins the CPI table by income year, converts income into constant dollars, and excludes invalid observations.
+
+The `run_sql()` function below executes this income query before selecting the age and building the matched sample.
+
+For example, an adult daughter who is recorded as a spouse needs her own Spouse income. Using her household's Head income would measure someone else's earnings. Head and Spouse income are not added together in this analysis.
+
+## Step 4: Use GROUP BY to Build Average Income
+
+For each candidate age, Python supplies `target_age`, `age_low = target_age - 7`, and `age_high = target_age + 7` to the SQL template. The script fills these integer values into its SQL template. For the selected age of 36, the aggregation becomes:
+
+```sql
+SELECT person_id,
+       AVG(real_income) AS mean_income,
+       COUNT(*) AS n_years
+FROM income
+WHERE age BETWEEN 29 AND 43
+GROUP BY person_id
+HAVING COUNT(*) >= 3;
+```
+
+`WHERE` selects eligible income-year observations before the aggregation. `GROUP BY` puts each person's observations together. `AVG()` calculates that person's mean, while `COUNT()` records how many observations support it. `HAVING` then keeps people with at least three observations. These are averages of available survey observations, not complete fifteen-year income histories.
+
+For the single-year measures, a window function chooses one observation per person:
+
+```sql
+WITH candidates AS (
+    SELECT *,
+           ROW_NUMBER() OVER (
+               PARTITION BY person_id
+               ORDER BY income_year
+           ) AS choice
+    FROM income
+    WHERE age = 36
+)
+SELECT * FROM candidates WHERE choice = 1;
+```
+
+`PARTITION BY` restarts the numbering for each person. `ORDER BY` resolves repeated observations at the same approximate age using the earlier income year. Both generations must have the selected age; their calendar years usually differ. This avoids letting people with more survey records receive more regression rows.
+
+The full script repeats these SQL steps for each candidate age, counts the common pairs, and rebuilds the sample at the selected age. No regressions are fitted during age selection.
+
+```python
+sample = run_sql(connection)
+connection.close()
+```
+
+The final query attaches the income measures using the father and child identifiers separately. For example, joining the same averages table twice gives each pair its two average incomes:
+
+```sql
+SELECT f.child_id, f.father_id,
+       pa.mean_income AS father_average,
+       ca.mean_income AS child_average
+FROM father_child AS f
+JOIN averages AS pa ON f.father_id = pa.person_id
+JOIN averages AS ca ON f.child_id = ca.person_id;
+```
+
+The full query also joins the selected single-year income records and keeps positive values for the log regressions. Both regressions use this same sample. Otherwise, a change in the coefficient could reflect a change in who is included rather than a change in income measurement.
+
+## Step 5: Let Python Estimate and Plot the IGE
+
+SQL has now produced `sample`, with one row per pair. Python takes the logarithms and fits the model described above. This is the single-year regression:
+
+```python
+from statsmodels.regression.linear_model import OLS
+from statsmodels.tools.tools import add_constant
+
+x = add_constant(
+    np.log(sample["father_mature"]).rename("log_father")
+)
+y = np.log(sample["child_mature"])
+model = OLS(y, x).fit()
+print(model.params["log_father"])
+```
+
+`add_constant()` adds the intercept. `OLS(y, x).fit()` estimates the line, and the coefficient on `log_father` is the IGE. The column names `father_mature` and `child_mature` refer to the selected single-year measurements, which are at age 36 in this run.
+
+For the average-income regression, we replace those columns with `father_average` and `child_average`. The repository helper runs both models and saves their coefficients and sample counts. The plotting function uses those estimates:
+
+```python
+estimates = regressions(sample)
+make_figures(sample, estimates, ROOT)
+```
+
+To reproduce the complete workflow, run `python code/analysis.py` from the repository root. It also writes the results section below. The displayed SQL snippets explain the core operations; the full script includes the intermediate table creation and age-selection loop.
+
+## Comparing One Year with Several Years
+
+<!-- RESULTS_START -->
+
+The common sample contains **143 father-child pairs and 123 distinct fathers**. The selected income-year age is **36** for both generations. It maximizes the number of pairs eligible for both models among ages 30–45, before any regressions are estimated. Age is approximated by survey age minus one.
+
+| Measure for both generations | Estimated IGE |
+|---|---:|
+| Single year at age 36 | 0.220 |
+| Average of available incomes at ages 29–43 | 0.297 |
+
+The average uses a mean of 6.4 observed income years for fathers and 5.1 for children. Fathers contribute 3–9 observations and children contribute 3–8. The mean elapsed span from first to last observation is 8.1 years for fathers and 8.3 for children. Observation counts and elapsed spans are different: missing years are not filled in.
+
+![Father-child income associations using a single year and a multi-year average. Dots are group means; lines use individual pairs.](figures/single_vs_average.png)
+
+![Two IGE point estimates on the same matched pairs.](figures/ige_comparison.png)
+
+The multi-year point estimate is higher than the single-year estimate in this sample. A 1% difference in fathers' average income is associated with approximately a 0.297% difference in children's average income. This is a descriptive association, not a causal effect.
+
+<!-- RESULTS_END -->
+
+The comparison changes the income measure for both generations while keeping the pairs fixed. The single-year regression can reflect a temporary high or low income in either generation. The average-income regression spreads the measure across more observations, so one unusual year has less influence.
+
+Under a simple measurement-error model, noise in the father's income can attenuate the estimated slope. Reducing that noise is one reason researchers use longer parental income histories. However, both variables change in this exercise, and the averages are still short and incomplete. A higher coefficient is not guaranteed in every sample. A numerical difference alone does not tell us how far either estimate is from the true lifetime-income elasticity.
+
+Each dot in the relationship figure represents a group mean. The fitted lines use individual pairs, not the group means. Grouping makes the overall association easier to see but hides individual variation. The second figure compares the two IGE point estimates; it is a descriptive comparison, not a significance test.
+
+## Takeaways
+
+The SQL lesson is that matching is a sequence of explicit decisions. `SELECT` identifies the information to keep. `JOIN` connects the right people through permanent IDs. `CASE` selects their own income rather than another household member's. Finally, `GROUP BY` and `AVG()` turn repeated observations into one income measure per person. Python can then estimate both regressions from the same pair-level table.
+
+The economic result is a positive father-child income association under both measures. The single-year IGE is about **0.220**, compared with **0.297** using average income. In approximate terms, a 10% difference in fathers' income is associated with a 2.2% difference in children's income in the first model and a 3.0% difference in the second.
+
+The larger average-income estimate is consistent with the idea that one-year income can understate long-run persistence when parental income is noisy. Keeping the pairs fixed means the difference is not simply caused by switching to a different set of families. However, both generations' income measures change, and their observed age coverage differs. This comparison illustrates sensitivity to income measurement; it does not establish the size of life-cycle bias or prove that averaging eliminates it.
+
+## Limitations
+
+- **Limited histories.** Ages 29–43 define the permitted window, not fifteen observed annual incomes. Fathers average 6.4 observations and children 5.1. Their average observed spans are about eight years. The averages are incomplete long-run income proxies.
+- **Selected sample.** The analysis requires records at age 36, repeated income observations, and positive incomes for the logarithms. The 143 pairs are unweighted and do not represent all U.S. families. Choosing age 36 by coverage also selects particular cohorts.
+- **Income coverage and coding.** The measure excludes farm and unincorporated business income. Only records identified as current reference persons or spouses/partners supply income. Imputed amounts and ambiguity in recorded zeros remain limitations.
+- **Age and historical conditions.** Age in the income year is approximated by survey age minus one. Fathers and children are typically measured in different calendar years. CPI adjusts purchasing power, but it does not remove changes in labor markets or guarantee comparable career stages.
+- **Descriptive interpretation.** The regressions contain no additional controls and do not identify a causal effect. Siblings may share fathers. We report no formal inference and do not claim that the coefficient difference is statistically significant.
+
+The useful lesson is to build the match carefully and explain what the income measure captures. A single-year observation and an average answer related but different questions about economic status, even when both regressions use the same people.
+
+## Sources
+
+Panel Study of Income Dynamics, public use dataset. Produced and distributed by the Survey Research Center, Institute for Social Research, University of Michigan, Ann Arbor, MI (2026). [PSID](https://psidonline.isr.umich.edu/). Extract J366544 and the FIMS biological parent-child map; variable definitions are documented in the supplied codebook. Identifier and family-role guidance: [PSID FAQ, questions 6–9](https://psidonline.isr.umich.edu/Guide/FAQ.aspx).
+
+U.S. Bureau of Labor Statistics. Consumer Price Index for All Urban Consumers: All Items in U.S. City Average, not seasonally adjusted, series CUUR0000SA0. Monthly observations, 1993–2022, retrieved October 21, 2026 through the [BLS Public Data API](https://www.bls.gov/developers/). Annual averages are calculated from twelve months.
+
+Gouskova, E., Chiteji, N., and Stafford, F. (2010). [Estimating Intergenerational Persistence of Lifetime Earnings with Life Course Matching: Evidence from PSID](https://doi.org/10.1016/j.labeco.2009.04.009). *Labour Economics*, 17(3), 592–597. This study motivates comparing income at similar life stages; the design here is a smaller teaching exercise, not a replication.
+
+Mazumder, B. (2018). [Intergenerational Mobility in the United States: What We Have Learned from the PSID](https://pmc.ncbi.nlm.nih.gov/articles/PMC6820674/). *The ANNALS of the American Academy of Political and Social Science*, 680(1), 213–234. [DOI](https://doi.org/10.1177/0002716218794129).

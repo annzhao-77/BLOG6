@@ -1,0 +1,17 @@
+age,single_year_pairs,common_pairs,selected
+30,85,77,False
+31,103,91,False
+32,109,107,False
+33,112,107,False
+34,128,124,False
+35,104,102,False
+36,146,143,True
+37,126,126,False
+38,144,140,False
+39,123,121,False
+40,130,128,False
+41,130,127,False
+42,123,123,False
+43,121,119,False
+44,89,88,False
+45,104,103,False

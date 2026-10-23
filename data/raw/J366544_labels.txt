@@ -1,0 +1,312 @@
+****** PSID DATA CENTER ************************* 
+****** Variable labels for JobID = 366544 ******* 
+
+Variable    Labels
+
+ER30000    RELEASE NUMBER                          
+ER30001    1968 INTERVIEW NUMBER                   
+ER30002    PERSON NUMBER                         68
+ER32000    SEX OF INDIVIDUAL                       
+ER32006    WHETHER SAMPLE OR NONSAMPLE             
+V1         RELEASE NUMBER                          
+V74        HDS LABOR INCOME                        
+V75        WIFE LBR INCOME                         
+ER30003    RELATIONSHIP TO HEAD                  68
+ER30004    AGE OF INDIVIDUAL                     68
+V441       RELEASE NUMBER                          
+V514       LABOR INC HEAD                          
+V516       LABOR INC WIFE                          
+ER30020    1969 INTERVIEW NUMBER                   
+ER30021    SEQUENCE NUMBER                       69
+ER30022    RELATIONSHIP TO HEAD                  69
+ER30023    AGE OF INDIVIDUAL                     69
+V1101      RELEASE NUMBER                          
+V1196      LABOR INC HEAD                          
+V1198      LABOR INC WIFE                          
+ER30043    1970 INTERVIEW NUMBER                   
+ER30044    SEQUENCE NUMBER                       70
+ER30045    RELATIONSHIP TO HEAD                  70
+ER30046    AGE OF INDIVIDUAL                     70
+V1801      RELEASE NUMBER                          
+V1897      LABOR INC HEAD                          
+V1899      LABOR INC WIFE                          
+ER30067    1971 INTERVIEW NUMBER                   
+ER30068    SEQUENCE NUMBER                       71
+ER30069    RELATIONSHIP TO HEAD                  71
+ER30070    AGE OF INDIVIDUAL                     71
+V2401      RELEASE NUMBER                          
+V2498      LABOR INC HEAD                          
+V2500      LABOR INC WIFE                          
+ER30091    1972 INTERVIEW NUMBER                   
+ER30092    SEQUENCE NUMBER                       72
+ER30093    RELATIONSHIP TO HEAD                  72
+ER30094    AGE OF INDIVIDUAL                     72
+V3001      RELEASE NUMBER                          
+V3051      HDS TOT LABOR Y                         
+V3053      WFS LABOR INC                           
+ER30117    1973 INTERVIEW NUMBER                   
+ER30118    SEQUENCE NUMBER                       73
+ER30119    RELATIONSHIP TO HEAD                  73
+ER30120    AGE OF INDIVIDUAL                     73
+V3401      RELEASE NUMBER                          
+V3463      TOT LABOR INC-HD                        
+V3465      TOT LABOR INC-WF                        
+ER30138    1974 INTERVIEW NUMBER                   
+ER30139    SEQUENCE NUMBER                       74
+ER30140    RELATIONSHIP TO HEAD                  74
+ER30141    AGE OF INDIVIDUAL                     74
+V3801      RELEASE NUMBER                          
+V3863      HEAD LABOR Y                            
+V3865      WIFE LABOR Y                            
+ER30160    1975 INTERVIEW NUMBER                   
+ER30161    SEQUENCE NUMBER                       75
+ER30162    RELATIONSHIP TO HEAD                  75
+ER30163    AGE OF INDIVIDUAL                     75
+V4301      RELEASE NUMBER                          
+V4379      WIFES ANNUAL WAGE    H25                
+V5031      HEAD TOTAL LABOR Y                      
+ER30188    1976 INTERVIEW NUMBER                   
+ER30189    SEQUENCE NUMBER                       76
+ER30190    RELATIONSHIP TO HEAD                  76
+ER30191    AGE OF INDIVIDUAL                     76
+V5201      RELEASE NUMBER                          
+V5289      WIFE 1976 WAGES                         
+V5627      TOT 1976 LABOR INCM HEAD                
+ER30217    1977 INTERVIEW NUMBER                   
+ER30218    SEQUENCE NUMBER                       77
+ER30219    RELATIONSHIP TO HEAD                  77
+ER30220    AGE OF INDIVIDUAL                     77
+V5701      RELEASE NUMBER                          
+V5788      WIFE 1977 WAGE                          
+V6174      TOT 1977 HEAD LABOR Y                   
+ER30246    1978 INTERVIEW NUMBER                   
+ER30247    SEQUENCE NUMBER                       78
+ER30248    RELATIONSHIP TO HEAD                  78
+ER30249    AGE OF INDIVIDUAL                     78
+V6301      RELEASE NUMBER                          
+V6398      WIFE 1978 LABOR/WAGE                    
+V6767      TOT 1978 HEAD LABOR Y                   
+ER30283    1979 INTERVIEW NUMBER                   
+ER30284    SEQUENCE NUMBER                       79
+ER30285    RELATIONSHIP TO HEAD                  79
+ER30286    AGE OF INDIVIDUAL                     79
+V6901      RELEASE NUMBER                          
+V6988      WIFE 1979 LABOR/WAGE                    
+V7413      TOT HD LABOR $ Y 79                     
+ER30313    1980 INTERVIEW NUMBER                   
+ER30314    SEQUENCE NUMBER                       80
+ER30315    RELATIONSHIP TO HEAD                  80
+ER30316    AGE OF INDIVIDUAL                     80
+V7501      RELEASE NUMBER                          
+V7580      WIFE 1980 LABOR/WAGE                    
+V8066      TOT HD LABOR $ $  Y 80                  
+ER30343    1981 INTERVIEW NUMBER                   
+ER30344    SEQUENCE NUMBER                       81
+ER30345    RELATIONSHIP TO HEAD                  81
+ER30346    AGE OF INDIVIDUAL                     81
+V8201      RELEASE NUMBER                          
+V8273      WIFE 1981 LABOR/WAGE                    
+V8690      TOT HD LABOR $ $  Y 81                  
+ER30373    1982 INTERVIEW NUMBER                   
+ER30374    SEQUENCE NUMBER                       82
+ER30375    RELATIONSHIP TO HEAD                  82
+ER30376    AGE OF INDIVIDUAL                     82
+V8801      RELEASE NUMBER                          
+V8881      WIFE 1982 LABOR/WAGE                    
+V9376      TOTAL HEAD LABOR Y 82                   
+ER30399    1983 INTERVIEW NUMBER                   
+ER30400    SEQUENCE NUMBER                       83
+ER30401    RELATIONSHIP TO HEAD                  83
+ER30402    AGE OF INDIVIDUAL                     83
+V10001     RELEASE NUMBER                          
+V10263     WIFE 1983 LABOR/Y                       
+V11023     TOTAL HEAD LABOR Y 83                   
+ER30429    1984 INTERVIEW NUMBER                   
+ER30430    SEQUENCE NUMBER                       84
+ER30431    RELATIONSHIP TO HEAD                  84
+ER30432    AGE OF INDIVIDUAL                     84
+V11101     RELEASE NUMBER                          
+V11404     WIFE 84 LABOR/WAGE                      
+V12372     TOTAL HEAD LABOR Y 84                   
+ER30463    1985 INTERVIEW NUMBER                   
+ER30464    SEQUENCE NUMBER                       85
+ER30465    RELATIONSHIP TO HEAD                  85
+ER30466    AGE OF INDIVIDUAL                     85
+V12501     RELEASE NUMBER                          
+V12803     WIFE 85 LABOR/WAGE                      
+V13624     TOTAL HEAD LABOR Y 85                   
+ER30498    1986 INTERVIEW NUMBER                   
+ER30499    SEQUENCE NUMBER                       86
+ER30500    RELATIONSHIP TO HEAD                  86
+ER30501    AGE OF INDIVIDUAL                     86
+V13701     RELEASE NUMBER                          
+V13905     WIFE 86 LABOR/WAGE                      
+V14671     TOTAL HEAD LABOR Y 86                   
+ER30535    1987 INTERVIEW NUMBER                   
+ER30536    SEQUENCE NUMBER                       87
+ER30537    RELATIONSHIP TO HEAD                  87
+ER30538    AGE OF INDIVIDUAL                     87
+V14801     RELEASE NUMBER                          
+V14920     WIFE 87 LABOR/WAGE                      
+V16145     TOTAL HEAD LABOR Y 87                   
+ER30570    1988 INTERVIEW NUMBER                   
+ER30571    SEQUENCE NUMBER                       88
+ER30572    RELATION TO HEAD                      88
+ER30573    AGE OF INDIVIDUAL                     88
+V16301     RELEASE NUMBER                          
+V16420     WIFE 88 LABOR/WAGE                      
+V17534     TOTAL HEAD LABOR Y 88                   
+ER30606    1989 INTERVIEW NUMBER                   
+ER30607    SEQUENCE NUMBER                       89
+ER30608    RELATION TO HEAD                      89
+ER30609    AGE OF INDIVIDUAL                     89
+V17701     RELEASE NUMBER                          
+V17836     WIFE 89 LABOR/WAGE                      
+V18878     TOTAL HEAD LABOR Y 89                   
+ER30642    1990 INTERVIEW NUMBER                   
+ER30643    SEQUENCE NUMBER                       90
+ER30644    RELATION TO HEAD                      90
+ER30645    AGE OF INDIVIDUAL                     90
+V19001     RELEASE NUMBER                          
+V19136     WIFE 90 LABOR/WAGE                      
+V20178     TOTAL HEAD LABOR Y 90                   
+ER30689    1991 INTERVIEW NUMBER                   
+ER30690    SEQUENCE NUMBER                       91
+ER30691    RELATION TO HEAD                      91
+ER30692    AGE OF INDIVIDUAL                     91
+V20301     RELEASE NUMBER                          
+V20436     WIFE 91 LABOR/WAGE                      
+V21484     TOTAL HEAD LABOR Y 91                   
+ER30733    1992 INTERVIEW NUMBER                   
+ER30734    SEQUENCE NUMBER                       92
+ER30735    RELATION TO HEAD                      92
+ER30736    AGE OF INDIVIDUAL                     92
+V21601     RELEASE NUMBER                          
+V21807     G52 WF 1992 LABOR INCOME EXCL BUS/FARM  
+V23323     HD 1992 TOTAL LABOR INCOME              
+V23324     WF 1992 TOTAL LABOR INCOME              
+ER30806    1993 INTERVIEW NUMBER                   
+ER30807    SEQUENCE NUMBER                       93
+ER30808    RELATION TO HEAD                      93
+ER30809    AGE OF INDIVIDUAL                     93
+ER2001     RELEASE NUMBER                          
+ER4140     LABOR INCOME OF HEAD-1993               
+ER4144     LABOR INCOME OF WIFE-1993               
+ER33101    1994 INTERVIEW NUMBER                   
+ER33102    SEQUENCE NUMBER                       94
+ER33103    RELATION TO HEAD                      94
+ER33104    AGE OF INDIVIDUAL                     94
+ER5001     RELEASE NUMBER                          
+ER6980     LABOR INCOME OF HEAD-1994               
+ER6984     LABOR INCOME OF WIFE-1994               
+ER33201    1995 INTERVIEW NUMBER                   
+ER33202    SEQUENCE NUMBER                       95
+ER33203    RELATION TO HEAD                      95
+ER33204    AGE OF INDIVIDUAL                     95
+ER7001     RELEASE NUMBER                          
+ER9231     LABOR INCOME OF HEAD-1995               
+ER9235     LABOR INCOME OF WIFE-1995               
+ER33301    1996 INTERVIEW NUMBER                   
+ER33302    SEQUENCE NUMBER                       96
+ER33303    RELATION TO HEAD                      96
+ER33304    AGE OF INDIVIDUAL                     96
+ER10001    RELEASE NUMBER                          
+ER12080    LABOR INCOME-HEAD                       
+ER12082    LABOR INCOME-WIFE                       
+ER33401    1997 INTERVIEW NUMBER                   
+ER33402    SEQUENCE NUMBER                       97
+ER33403    RELATION TO HEAD                      97
+ER33404    AGE OF INDIVIDUAL                     97
+ER13001    RELEASE NUMBER                          
+ER16463    LABOR INCOME-HEAD                       
+ER16465    LABOR INCOME-WIFE                       
+ER33501    1999 INTERVIEW NUMBER                   
+ER33502    SEQUENCE NUMBER                       99
+ER33503    RELATION TO HEAD                      99
+ER33504    AGE OF INDIVIDUAL                     99
+ER17001    RELEASE NUMBER                          
+ER20443    LABOR INCOME OF HEAD-2000               
+ER20447    LABOR INCOME OF WIFE-2000               
+ER33601    2001 INTERVIEW NUMBER                   
+ER33602    SEQUENCE NUMBER                       01
+ER33603    RELATION TO HEAD                      01
+ER33604    AGE OF INDIVIDUAL                     01
+ER21001    RELEASE NUMBER                          
+ER24116    LABOR INCOME OF HEAD LAST YEAR          
+ER24135    LABOR INCOME OF WIFE LAST YEAR          
+ER33701    2003 INTERVIEW NUMBER                   
+ER33702    SEQUENCE NUMBER                       03
+ER33703    RELATION TO HEAD                      03
+ER33704    AGE OF INDIVIDUAL                     03
+ER25001    RELEASE NUMBER                          
+ER27931    LABOR INCOME OF HEAD-2004               
+ER27943    LABOR INCOME OF WIFE-2004               
+ER33801    2005 INTERVIEW NUMBER                   
+ER33802    SEQUENCE NUMBER                       05
+ER33803    RELATION TO HEAD                      05
+ER33804    AGE OF INDIVIDUAL                     05
+ER36001    RELEASE NUMBER                          
+ER40921    LABOR INCOME OF HEAD-2006               
+ER40933    LABOR INCOME OF WIFE-2006               
+ER33901    2007 INTERVIEW NUMBER                   
+ER33902    SEQUENCE NUMBER                       07
+ER33903    RELATION TO HEAD                      07
+ER33904    AGE OF INDIVIDUAL                     07
+ER42001    RELEASE NUMBER                          
+ER46829    LABOR INCOME OF HEAD-2008               
+ER46841    LABOR INCOME OF WIFE-2008               
+ER34001    2009 INTERVIEW NUMBER                   
+ER34002    SEQUENCE NUMBER                       09
+ER34003    RELATION TO HEAD                      09
+ER34004    AGE OF INDIVIDUAL                     09
+ER47301    RELEASE NUMBER                          
+ER52237    LABOR INCOME OF HEAD-2010               
+ER52249    LABOR INCOME OF WIFE-2010               
+ER34101    2011 INTERVIEW NUMBER                   
+ER34102    SEQUENCE NUMBER                       11
+ER34103    RELATION TO HEAD                      11
+ER34104    AGE OF INDIVIDUAL                     11
+ER53001    RELEASE NUMBER                          
+ER58038    LABOR INCOME OF HEAD-2012               
+ER58050    LABOR INCOME OF WIFE-2012               
+ER34201    2013 INTERVIEW NUMBER                   
+ER34202    SEQUENCE NUMBER                       13
+ER34203    RELATION TO HEAD                      13
+ER34204    AGE OF INDIVIDUAL                     13
+ER60001    RELEASE NUMBER                          
+ER65216    LABOR INCOME OF HEAD-2014               
+ER65244    LABOR INCOME OF SPOUSE-2014             
+ER34301    2015 INTERVIEW NUMBER                   
+ER34302    SEQUENCE NUMBER                       15
+ER34303    RELATION TO HEAD                      15
+ER34305    AGE OF INDIVIDUAL                     15
+ER66001    RELEASE NUMBER                          
+ER71293    LABOR INCOME OF REF PERSON-2016         
+ER71321    LABOR INCOME OF SPOUSE-2016             
+ER34501    2017 INTERVIEW NUMBER                   
+ER34502    SEQUENCE NUMBER                       17
+ER34503    RELATION TO REFERENCE PERSON          17
+ER34504    AGE OF INDIVIDUAL                     17
+ER72001    RELEASE NUMBER                          
+ER77315    LABOR INCOME OF REF PERSON-2018         
+ER77343    LABOR INCOME OF SPOUSE-2018             
+ER34701    2019 INTERVIEW NUMBER                   
+ER34702    SEQUENCE NUMBER                       19
+ER34703    RELATION TO REFERENCE PERSON          19
+ER34704    AGE OF INDIVIDUAL                     19
+ER78001    RELEASE NUMBER                          
+ER81642    LABOR INCOME OF REF PERSON-2020         
+ER81670    LABOR INCOME OF SPOUSE-2020             
+ER34901    2021 INTERVIEW NUMBER                   
+ER34902    SEQUENCE NUMBER                       21
+ER34903    RELATION TO REFERENCE PERSON          21
+ER34904    AGE OF INDIVIDUAL                     21
+ER82001    RELEASE NUMBER                          
+ER85496    LABOR INCOME OF REF PERSON-2022         
+ER85524    LABOR INCOME OF SPOUSE-2022             
+ER35101    2023 INTERVIEW NUMBER                   
+ER35102    SEQUENCE NUMBER                       23
+ER35103    RELATION TO REFERENCE PERSON          23
+ER35104    AGE OF INDIVIDUAL                     23
+
+*** End of labels ******************************* 

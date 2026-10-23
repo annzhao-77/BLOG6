@@ -1,0 +1,22 @@
+{
+  "retrieved_utc": "2026-10-21T23:50:30.151058+00:00",
+  "series_id": "CUUR0000SA0",
+  "description": "CPI-U, U.S. city average, all items, not seasonally adjusted",
+  "index_base": "1982-84 = 100",
+  "sources": [
+    {
+      "file": "cpi_u_1993_2002.json",
+      "url": "https://api.bls.gov/publicAPI/v2/timeseries/data/CUUR0000SA0?startyear=1993&endyear=2002"
+    },
+    {
+      "file": "cpi_u_2003_2012.json",
+      "url": "https://api.bls.gov/publicAPI/v2/timeseries/data/CUUR0000SA0?startyear=2003&endyear=2012"
+    },
+    {
+      "file": "cpi_u_2013_2022.json",
+      "url": "https://api.bls.gov/publicAPI/v2/timeseries/data/CUUR0000SA0?startyear=2013&endyear=2022"
+    }
+  ],
+  "annual_method": "Arithmetic mean of all 12 monthly observations; not rounded before deflation",
+  "income_base_year": 2022
+}
