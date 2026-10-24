@@ -356,7 +356,7 @@ def write_blog_results(sample, estimates):
 | Single year at age {TARGET_AGE} | {single:.3f} |
 | Average at ages {TARGET_AGE-7}–{TARGET_AGE+7} | {average:.3f} |
 
-![Income associations. Dots are group means; lines are OLS fits using individual pairs.](figures/single_vs_average.png)
+![Income associations. Dots are group means; lines are OLS fits using individual pairs.](results/figures/single_vs_average.png)
 
 """
     (TABLES / 'blog_results.md').write_text(text, encoding='utf-8')
