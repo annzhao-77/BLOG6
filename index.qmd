@@ -130,7 +130,7 @@ The coefficient on the father’s log income is the IGE. Replacing these age-36 
 ## Results and Takeaway
 
 <!-- RESULTS_START -->
-Both models use **143 pairs and 123 fathers**.
+Both models use **143 pairs and 123 fathers**, since some fathers have more than one child in the data.
 
 | Income measure | IGE |
 |---|---:|
